@@ -1,0 +1,162 @@
+/*header*/
+.navbar {
+    border-bottom: #ececec solid 2px;
+}
+
+.bg-white {
+    background: #ffffff !important;
+}
+
+.logoutIcon {
+    color: #17a2b8;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.logoutIcon:hover {
+    color: #007bff;
+}
+
+
+/*genral*/
+.center {
+    text-align: center;
+}
+
+.container {
+    padding: 10px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body {
+    background: #ffffff !important;
+}
+
+.left {
+    float: left;
+}
+
+.padding-0 {
+    padding: 0 !important;
+}
+
+.row {
+    padding-bottom: 20px;
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.noteTitle {
+  overflow: hidden; text-overflow: ellipsis
+}
+
+.margin-0 {
+    margin: 0;
+}
+.h-center {
+    margin: 0 auto;
+}
+
+/*styles*/
+
+.padding-top-4 {
+    padding-top: 4px;
+}
+
+.padding-bottom-4 {
+    padding-bottom: 4px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+/*note display*/
+
+.noteCard {
+    height: 75px;
+    background: #ffffff;
+    margin: 2px;
+    border-bottom: #ececec solid 2px;
+}
+.noteCardMain {
+    width: 85%;
+    float: left;
+}
+
+.noteCardStar {
+    text-align: center;
+    height: 100%;
+    width: 15%;
+    float: left;
+}
+
+.noteCardMainPadding {
+    padding: 10px 0 10px 10px;
+}
+
+.noteCardStarPadding {
+    height: 100%;
+    padding: 10px 5px 10px 0px;
+}
+
+/*button bar*/
+.buttonBarParent {
+    position: absolute; 
+    left: 50%; 
+    bottom: 20px;
+}
+
+.buttonBarChild {
+    position: relative; 
+    left: -50%;
+}
+
+.singleTool {
+    padding: 0 10px 0 10px;
+    color: #007bff !important;
+    background-color: transparent;
+    
+}
+
+.singleTool:hover {
+    color:#0056b3 !important;
+}
+
+.buttonBarAround {
+    background-color: #ffffff;
+    width: fit-content;
+    padding: 0 10px 0 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0px 10px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10%;
+    border: 1px solid #eeeeee;
+}
+
+/*login/register page*/
+
+.login-card {
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    max-width: 500px;
+
+}
+
+.loginRegisterStyle {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    resize: vertical;
+    background: #eeeeee;
+}
+
+.loginRegisterStyle .h-center {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+}

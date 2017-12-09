@@ -1,0 +1,52 @@
+<template name="dashboard">
+    {{> header}}
+    <div class="container" style="max-width: 100%">
+        <div class="row">
+            <div class="col-10" style="padding-right: 0">
+                <input id="searchBar" type="text" class="form-control" placeholder="search">
+            </div>
+            <div class="col-2 center singleTool" style="padding-left: 0">
+                {{#if onlyStared}}
+                    <i id="onlyStar" style="padding: 3 0 0 0" class="pointer fa fa-star padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i>
+                
+                {{else}}
+                    <i id="onlyStar" style="padding: 3 0 0 0" class="pointer fa fa-star-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i>
+                {{/if}}
+            </div>
+        </div>
+        <div class="row" style="margin: 0">
+            {{#each notes}}
+            <div class="pointer padding-0 col-sm-6 col-lg-3 col-md-4">
+                <div class="noteCard">
+                    <div id="card" class="noteCardMain">
+                        <div class="noteCardMainPadding">
+                            <p class="margin-0">
+                                <h5 style="height: 26px;" class="noteTitle">{{title}}</h5>
+                            </p>
+                            <h6 class="margin-0" style="color: #a0a0a0">Last Update at {{lastUpdated}}</h6>
+                        </div>
+                    </div>
+                    <div id="starNote"  class="noteCardStar">
+                        <div class="noteCardStarPadding">
+                            {{#if isStared}}
+                              <div style="padding: 10.5px 0 0 0" class="singleTool"><i style="padding: 0" class="fa fa-star padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></div>
+                            {{else}}
+                              <div style="padding: 10.5px 0 0 0" class="singleTool"><i style="padding: 0"  class="fa fa-star-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="buttonBarParent">
+        <div class="buttonBarChild">
+            <div class="buttonBarAround pointer">
+                <span id="addNote" class="singleTool"><i class="fa fa-plus-square-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
+            </div>
+        </div>
+    </div>
+    {{> footer}}
+</template>

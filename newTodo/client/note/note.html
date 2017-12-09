@@ -1,0 +1,39 @@
+<template name="notePage">
+    {{> header}}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <p>
+            {{#if notNew}}
+              <h6 class="margin-0" style="color: #a0a0a0">Last Update at {{lastUpdated}} by {{updateByWho}}</h6>
+            {{/if}}
+          </p>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <input type="text" class="form-control" id="titleInput" aria-describedby="emailHelp" placeholder="Title">
+            <div class="invalid-feedback">
+              Please provide a valid city.
+            </div>
+          </div>
+          <div id="toolbar"></div>
+          <div id="editor"></div>
+        </div>
+      </div>
+    </div>
+    
+    {{#if notNew}}
+    <div class="buttonBarParent">
+        <div class="buttonBarChild">
+            <div class="buttonBarAround pointer">
+                <span id="deleteNote" class="singleTool"><i class="fa fa-trash-o padding-top-4 padding-bottom-4 fa-2x" aria-hidden="true"></i></span>
+                {{#if isStared}}
+                  <span id="starNote" class="singleTool"><i class="fa fa-star padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
+                {{else}}
+                  <span id="starNote" class="singleTool"><i class="fa fa-star-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+</template>
