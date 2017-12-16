@@ -23,7 +23,7 @@
                             <p class="margin-0">
                                 <h5 style="height: 26px;" class="noteTitle">{{title}}</h5>
                             </p>
-                            <h6 class="margin-0" style="color: #a0a0a0">Last Update at {{lastUpdated}}</h6>
+                            <h6 class="margin-0" style="color: #a0a0a0">{{lastUpdated}}</h6>
                         </div>
                     </div>
                     <div id="starNote"  class="noteCardStar">
@@ -41,12 +41,11 @@
             {{/each}}
         </div>
     </div>
-    <div class="buttonBarParent">
-        <div class="buttonBarChild">
-            <div class="buttonBarAround pointer">
-                <span id="addNote" class="singleTool"><i class="fa fa-plus-square-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
-            </div>
-        </div>
+    
+    <div class="toolbar">
+      <div class="buttonGrupe vAlighn padding-bottom-20">
+        <span id="addNote" class="singleTool"><i class="pointer fa fa-plus-square-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
+      </div>
     </div>
     {{> footer}}
 </template>

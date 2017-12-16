@@ -13,27 +13,25 @@
           <div class="form-group">
             <input type="text" class="form-control" id="titleInput" aria-describedby="emailHelp" placeholder="Title">
             <div class="invalid-feedback">
-              Please provide a valid city.
+              Please provide a valid title.
             </div>
           </div>
-          <div id="toolbar"></div>
-          <div id="editor"></div>
+          <!--<div id="toolbar"></div>-->
+          <div class="quillEditor" id="editor"></div>
         </div>
       </div>
     </div>
     
     {{#if notNew}}
-    <div class="buttonBarParent">
-        <div class="buttonBarChild">
-            <div class="buttonBarAround pointer">
-                <span id="deleteNote" class="singleTool"><i class="fa fa-trash-o padding-top-4 padding-bottom-4 fa-2x" aria-hidden="true"></i></span>
-                {{#if isStared}}
-                  <span id="starNote" class="singleTool"><i class="fa fa-star padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
-                {{else}}
-                  <span id="starNote" class="singleTool"><i class="fa fa-star-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
-                {{/if}}
-            </div>
-        </div>
+    <div class="toolbar">
+      <div class="buttonGrupe vAlighn padding-bottom-20">
+        <span id="deleteNote" class="singleTool"><i class="pointer fa fa-trash-o padding-top-4 padding-bottom-4 fa-2x" aria-hidden="true"></i></span>
+        {{#if isStared}}
+        <span id="starNote" class="singleTool"><i class="pointer fa fa-star padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
+        {{else}}
+        <span id="starNote" class="singleTool"><i class="pointer fa fa-star-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
+        {{/if}}
+      </div>
     </div>
     {{/if}}
 </template>

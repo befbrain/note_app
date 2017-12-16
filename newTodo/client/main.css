@@ -62,6 +62,11 @@ body {
     margin: 0 auto;
 }
 
+.vAlighn {
+    margin: 0 auto;
+    width: fit-content;
+}
+
 /*styles*/
 
 .padding-top-4 {
@@ -74,6 +79,10 @@ body {
 
 .pointer {
     cursor: pointer;
+}
+
+.padding-bottom-20 {
+    padding-bottom: 20px;
 }
 /*note display*/
 
@@ -105,16 +114,6 @@ body {
 }
 
 /*button bar*/
-.buttonBarParent {
-    position: absolute; 
-    left: 50%; 
-    bottom: 20px;
-}
-
-.buttonBarChild {
-    position: relative; 
-    left: -50%;
-}
 
 .singleTool {
     padding: 0 10px 0 10px;
@@ -125,15 +124,6 @@ body {
 
 .singleTool:hover {
     color:#0056b3 !important;
-}
-
-.buttonBarAround {
-    background-color: #ffffff;
-    width: fit-content;
-    padding: 0 10px 0 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0px 10px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 10%;
-    border: 1px solid #eeeeee;
 }
 
 /*login/register page*/
@@ -159,4 +149,26 @@ body {
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
+}
+
+/*quill*/
+.quillEditor {
+    width: 100%;
+}
+
+/*toolbar*/
+.toolbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.buttonGrupe {
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    width: fit-content;
+    padding: 0 10px 0 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0px 10px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10%;
+    border: 1px solid #eeeeee;
 }

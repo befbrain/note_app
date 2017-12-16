@@ -1,0 +1,7 @@
+{
+  "galaxy.meteor.com": { 
+     "env": { 
+       "MONGO_URL": "mongodb://befbrain:mla...Froggy99@ds137206.mlab.com:37206/befnotes-db" 
+     } 
+   }
+}
