@@ -3,59 +3,81 @@ import { ReactiveVar } from 'meteor/reactive-var';
     
 Meteor.subscribe("userPublish");
 Meteor.subscribe("notesPublish");
+ 
 
 Template.notePage.onRendered(function() {
     noSave = true;
     
     var toolbarOptions = [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
+    //   ['blockquote', 'code-block'],
       ['link', 'image'],
     
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    //   [{ 'header': 1 }, { 'header': 2 }],               // custom button values
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+    //   [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
       [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
+    //   [{ 'direction': 'rtl' }],                         // text direction
     
     //   [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'header': [1, 2, false] }],
     
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    //   [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     //   [{ 'font': [] }],
       [{ 'align': [] }],
     
-      ['clean']                                         // remove formatting button
+    //   ['clean']                                         // remove formatting button
     ];
     
     quill = new Quill('#editor', {
       modules: {
-        toolbar: toolbarOptions
+        toolbar: toolbarOptions,
       },
       
       theme: 'snow'
     });
     
-    if(Session.get('newNote') != true) {
+    
+    
+    if(Session.get('newNote') != true) {    
         $('#titleInput').val(notes.find({_id: Session.get('noteId')}).fetch()[0].title);
-        
-        quill.container.firstChild.innerHTML = notes.find({_id: Session.get('noteId')}).fetch()[0].note; //fil quill with note
+        quill.setContents(notes.find({_id: Session.get('noteId')}).fetch()[0].note);
     }
+    
+    Meteor.setInterval(function() {
+        if(Session.get('newNote') != true) {    
+            if(notes.find({_id: Session.get('noteId')}).fetch()[0].toUpdate == true) {
+                toUpdate = notes.find({_id: Session.get('noteId')}).fetch()[0].toUpdateWho;
+                userEmail = Meteor.users.find({_id: Meteor.userId()}).fetch()[0].emails[0].address;
+                
+                if(toUpdate != userEmail) {
+                    
+                    Meteor.call('updateNote', {_id: Session.get('noteId')}, {toUpdate: false});
+                    Meteor.call('updateNote', {_id: Session.get('noteId')}, {toUpdateWho: null});
+                    range = quill.getSelection();
+                    $('#titleInput').val(notes.find({_id: Session.get('noteId')}).fetch()[0].title);
+                    quill.setContents(notes.find({_id: Session.get('noteId')}).fetch()[0].note);
+                    
+                    if(range != null) {
+                        quill.setSelection(range.index, range.length);
+                    }
+                }
+            }
+        
+        }
+    }, 1000);
     
     //check if title is invalid
-    if($('#titleInput').val() == "") {
-        $( "#titleInput" ).addClass( 'is-invalid' );
-        $(".invalid-feedback").html("Invalid input. You must have a title. Your title changes will not be saved.");
-    } else {
-        $( "#titleInput" ).removeClass( 'is-invalid' );
-    }
+    checkTitle()
     
     //when quill is changed
-    quill.on('text-change', function(delta, source) {
-        if(noSave != true) {
-            noteChange()
+    quill.on('text-change', function(delta, oldDelta, source) {
+        if(source == 'user') {
+            if(noSave != true) {
+                noteChange(true)
+            }
+            noSave = false;
         }
-        noSave = false;
     });
 });
 
@@ -120,13 +142,9 @@ Template.notePage.helpers({
 
 Template.notePage.events({
     'keyup #titleInput': _.throttle(function(event) { //when title input is changed
-        if($('#titleInput').val() == "") {
-            $( "#titleInput" ).addClass( 'is-invalid' );
-        } else {
-            $( "#titleInput" ).removeClass( 'is-invalid' );
-        }
-        noteChange();
-    }, 1000),
+        checkTitle()
+        noteChange(true);
+    }, 10),
     
     'click #deleteNote': function(event) {//click delete
         Meteor.call('removeNote', Session.get('noteId'));
@@ -144,41 +162,56 @@ Template.notePage.events({
     
 });
 
-function noteChange() {
-    html = quill.container.firstChild.innerHTML;
-    if((html == "<p><br></p>")) { // if not note
-        return 0;  
-    } else if($('#titleInput').val() == "") {//if title is blank
-        return 0; 
-    } else if((Session.get('newNote') == true)) {//if creating new note
-        
-        //create new note
-        noteId = Meteor.call("insertNote", {
-            lastUpdated: new Date(),
-            lastUpdatedWho: Meteor.userId(),
-            owner: Meteor.userId(),
-            sharedWith: [],
-            note: html,
-            title: $('#titleInput').val(),
-            tags: null,
-            stared: false,
-        }, function(error, result){//error check
-            if(error){
-                console.log(error);
-            } else {
-                console.log('created note: ' + result);
-                Session.set('noteId', result);
+function noteChange(save) {
+    if(save == true) {
+        html = quill.getContents();
+        if($('#titleInput').val() == "") {//if title is blank
+            return 0; 
+        } else if((Session.get('newNote') == true)) {//if creating new note
+            
+            //create new note
+            noteId = Meteor.call("insertNote", {
+                lastUpdated: new Date(),
+                lastUpdatedWho: Meteor.userId(),
+                owner: Meteor.userId(),
+                sharedWith: [],
+                note: html,
+                title: $('#titleInput').val(),
+                stared: false,
+                toUpdate: false,
+                toUpdateWho: null
+            }, function(error, result){//error check
+                if(error){
+                    console.log(error);
+                } else {
+                    console.log('created note: ' + result);
+                    Session.set('noteId', result);
+                }
+            });
+            
+            quill.on('text-change', function(delta, oldDelta, source) {
+                if(source == 'user') {
+                    if(noSave != true) {
+                        noteChange(true)
+                    }
+                    noSave = false;
+                }
+            });
+            
+            Session.set('newNote', false);
+            return 0;
+        } else { //update note
+            if($('#titleInput').val() != "") {
+                Meteor.call('updateNote', {_id: Session.get('noteId')}, {title: $('#titleInput').val()});
             }
-        });
-        Session.set('newNote', false);
-        return 0;
-    } else { //update note
-        if($('#titleInput').val() != "") {
-            Meteor.call('updateNote', {_id: Session.get('noteId')}, {title: $('#titleInput').val()});
+            Meteor.call('updateNote', {_id: Session.get('noteId')}, {note: html});
+            Meteor.call('updateNote', {_id: Session.get('noteId')}, {lastUpdated: new Date()});
+            Meteor.call('updateNote', {_id: Session.get('noteId')}, {lastUpdatedWho: Meteor.userId()});
+            Meteor.call('updateNote', {_id: Session.get('noteId')}, {toUpdate: true});
+            Meteor.call('updateNote', {_id: Session.get('noteId')}, {toUpdateWho: Meteor.users.find({_id: Meteor.userId()}).fetch()[0].emails[0].address});
         }
-        Meteor.call('updateNote', {_id: Session.get('noteId')}, {note: html});
-        Meteor.call('updateNote', {_id: Session.get('noteId')}, {lastUpdated: new Date()});
-        Meteor.call('updateNote', {_id: Session.get('noteId')}, {lastUpdatedWho: Meteor.userId()});
+    } else {
+        return 0;
     }
 }
 //convert number to month
@@ -201,4 +234,13 @@ function getMonthAsString() {
     var date = new Date();
     var strDate = month[date.getMonth()];
     return strDate;
+}
+
+function checkTitle() {
+    if($('#titleInput').val() == "") {
+        $( "#titleInput" ).addClass( 'is-invalid' );
+        $(".invalid-feedback").html("Invalid input. You must have a title. Your title changes will not be saved.");
+    } else {
+        $( "#titleInput" ).removeClass( 'is-invalid' );
+    }
 }

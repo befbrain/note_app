@@ -31,7 +31,10 @@
         {{else}}
         <span id="starNote" class="singleTool"><i class="pointer fa fa-star-o padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
         {{/if}}
+        <span id="shareNote" class="singleTool"><i data-toggle="modal" data-target="#shareModal" class="fa pointer fa-share-alt padding-bottom-4 padding-top-4 fa-2x" aria-hidden="true"></i></span>
       </div>
     </div>
     {{/if}}
+    
+    {{> share}}
 </template>

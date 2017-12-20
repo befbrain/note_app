@@ -1,0 +1,56 @@
+<template name="share">
+  <div id="shareModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Share</h5>
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="pointer">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Share your note with other users</h6>
+          
+          <div class="form-group">
+            <label for="exampleInputPassword1">Users Email</label>
+            <input type="email" class="form-control" id="shareEmail" placeholder="Email">
+          </div>
+          <hr>
+          <h6>Shared With</h6>
+          <div style="margin-bottom: 10px; width: 65%; overflow: hidden; text-overflow: ellipsis;" class="left">{{owner}}</div>
+          <div style="width: 35%;" class="right">
+            <span class="right">
+              {{#if isOwnerYou}}
+                (you)
+              {{/if}}
+              (owner)
+            </span>
+            
+            
+          </div>
+          
+          {{#each note}}
+            {{#each sharedWith}}
+              <div style="margin-bottom: 10px; width: 80%; overflow: hidden; text-overflow: ellipsis;" class="left">{{this}}</div>
+
+              <div style="width: 20%;" class="right">
+                <span class="right">
+                  {{#if isYou}}
+                    (you)
+                  {{/if}}
+                  <span class="singleTool"><i id="removeUserBtn" class="pointer fa fa-times padding-bottom-4 padding-top-4" aria-hidden="true"></i></span>
+                </span>
+              </div>
+              
+            {{/each}}
+          {{/each}}
+        </div>
+        <div class="modal-footer">
+          <button id="shareNoteBtn" type="button" class="btn btn-primary">Share</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

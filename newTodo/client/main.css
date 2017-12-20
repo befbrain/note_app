@@ -27,6 +27,14 @@
     padding: 10px;
 }
 
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
 a:hover {
     text-decoration: none;
 }
