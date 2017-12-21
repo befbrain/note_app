@@ -239,7 +239,7 @@ function getMonthAsString() {
 function checkTitle() {
     if($('#titleInput').val() == "") {
         $( "#titleInput" ).addClass( 'is-invalid' );
-        $(".invalid-feedback").html("Invalid input. You must have a title. Your title changes will not be saved.");
+        $(".invalid-feedback").html("You must have a title. Your title changes will not be saved.");
     } else {
         $( "#titleInput" ).removeClass( 'is-invalid' );
     }

@@ -36,7 +36,7 @@ Meteor.publish("notesPublish", function () {
                     owner: Meteor.userId()
                 },
                 {
-                    sharedWith: 'brandon@befweb.com'//Meteor.users.find({_id: Meteor.userId()}).fetch()[0].emails[0].address
+                    sharedWith: Meteor.users.find({_id: Meteor.userId()}).fetch()[0].emails[0].address
                 }
             ] 
         }, 
