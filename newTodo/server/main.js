@@ -16,12 +16,16 @@ Meteor.methods({// for security
         return noteId;
     },
     
-    updateNote: function (find, update) {
+    updateNote: function(find, update) {
         notes.update(find, {$set: update});
     },
     
-    removeNote: function (noteId) {
+    removeNote: function(noteId) {
         notes.remove(noteId);
+    },
+    
+    userId: function() {
+        return Meteor.userId()
     },
 });
 
@@ -55,7 +59,9 @@ Meteor.publish("notesPublish", function () {
             }
         }
     ); 
-});
+}); 
+
+
 //allows client side changes to a collection
 // Meteor.users.allow({
 //     insert: function (userId, doc) {

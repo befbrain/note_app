@@ -1,9 +1,5 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
-    
-Meteor.subscribe("userPublish");
-Meteor.subscribe("notesPublish");
- 
 
 Template.notePage.onRendered(function() {
     noSave = true;
@@ -44,7 +40,7 @@ Template.notePage.onRendered(function() {
         quill.setContents(notes.find({_id: Session.get('noteId')}).fetch()[0].note);
     }
     
-    Meteor.setInterval(function() {
+    this.intervalId = Meteor.setInterval(function() {
         if(Session.get('newNote') != true) {    
             if(notes.find({_id: Session.get('noteId')}).fetch()[0].toUpdate == true) {
                 toUpdate = notes.find({_id: Session.get('noteId')}).fetch()[0].toUpdateWho;
@@ -80,6 +76,10 @@ Template.notePage.onRendered(function() {
         }
     });
 });
+
+Template.notePage.onDestroyed(function() {
+    Meteor.clearInterval(this.intervalId);
+})
 
 Template.notePage.helpers({
     userID() {
@@ -148,6 +148,7 @@ Template.notePage.events({
     
     'click #deleteNote': function(event) {//click delete
         Meteor.call('removeNote', Session.get('noteId'));
+        Meteor.clearInterval(Session.get('intervalId'));
         Router.go('/dashboard');
         Session.set('allowNotes', false);
     },

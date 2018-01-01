@@ -1,8 +1,5 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
-    
-Meteor.subscribe("userPublish");
-Meteor.subscribe("notesPublish");
 
 Template.dashboard.onRendered(function() {
     Session.set('onlyStar', false)
@@ -65,36 +62,17 @@ Template.dashboard.events({
     },
     
     'click #onlyStar': function(event) {
-        if(Session.get('onlyStar') == true) {
-            Session.set('notesToShow', notes.find().fetch());
-            Session.set('onlyStar', false);
-        } else {
-            Session.set('notesToShow', notes.find({stared: true}).fetch());
-            Session.set('onlyStar', true);
-        }
+        clickOnlyStar()
     },
     
     'keyup #searchBar': function(event) {
-        notesToFind = [];
-        _.forEach(notes.find().fetch(), function(noteTemp){//for each note in collection of notes
-            //all to lower to standerdize
-            
-            title = $('#searchBar').val();
-            title = title.toLowerCase()
-            
-            noteNote = noteTemp.note;
-            noteNote = noteNote.toLowerCase()
-            
-            noteTitle = noteTemp.title;
-            noteTitle = noteTitle.toLowerCase()
-            
-            noteNote = noteNote.replace(/<\/?[^>]+(>|$)/g, "");
-            if (noteNote.indexOf(title) >=0) {//if note contains search
-                notesToFind.push(noteTemp)
-            } else if(noteTitle.indexOf(title) >=0) {//if note tile contains search
-                notesToFind.push(noteTemp)
-            }
-        });
+        if(Session.get('onlyStar') == true) {
+            notesToFind = findSearchedNotes(notes.find({stared: true}).fetch());
+        } else {
+            notesToFind = findSearchedNotes(notes.find().fetch());
+        }
+        
+        notesToFind = findSearchedNotes(notesToFind);
         
         Session.set('notesToShow', notesToFind);
     },
@@ -136,4 +114,53 @@ function getMonthAsString() {
     var date = new Date();
     var strDate = month[date.getMonth()];
     return strDate;
+}
+
+function findSearchedNotes(arr) {
+     notesToFind = [];
+    _.forEach(arr, function(noteTemp){//for each note in collection of notes
+        //all to lower to standerdize
+        
+        title = $('#searchBar').val();
+        title = title.toLowerCase()
+        
+        noteNote = noteTemp.note.ops;
+        
+        stringNote = ''
+        
+         _.forEach(noteNote, function(insert){
+             if(typeof insert.insert != 'object') {
+                 stringNote = stringNote + insert.insert;
+             }
+         })
+        
+        stringNote = stringNote.toLowerCase()
+        
+        noteTitle = noteTemp.title;
+        noteTitle = noteTitle.toLowerCase()
+        
+        if (stringNote.indexOf(title) >=0) {//if note contains search
+            notesToFind.push(noteTemp)
+        } else if(noteTitle.indexOf(title) >=0) {//if note tile contains search
+            notesToFind.push(noteTemp)
+        }
+    });
+    return notesToFind
+}
+
+function clickOnlyStar() {
+    notesToShow = []
+    if(Session.get('onlyStar') == true) {
+        notesToShow = notes.find().fetch()
+        Session.set('onlyStar', false);
+    } else {
+        notesToShow = notes.find({stared: true}).fetch();
+        Session.set('onlyStar', true);
+    }
+    
+    if($('#searchBar').val() != "") {
+        notesToShow = findSearchedNotes(notesToShow);
+    }
+    
+    Session.set('notesToShow', notesToShow);
 }

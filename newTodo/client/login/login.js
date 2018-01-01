@@ -1,8 +1,5 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
-  
-Meteor.subscribe("userPublish");
-Meteor.subscribe("notesPublish");
 
 Template.login.onRendered(function(){
     if($(document).height() <= $('#loginPage .h-center').height()) {
